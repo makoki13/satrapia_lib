@@ -1,5 +1,6 @@
 /** TERMINADO */
 pub mod dispatcher {
+    #[derive(Clone)]
     pub struct Dispatcher {
         id: i32
     }

@@ -1,25 +1,33 @@
 pub mod silo {
-    pub struct Silo {
-      capital: Capital
-      almacenes: Vec<Almacen>
+    pub use juego::almacen::almacen::Almacen;
+    //pub use juego::capital::capital::Capital;
+    pub use juego::punto::punto::Punto;
+    pub use juego::recurso::recurso::{Recurso, TipoRecurso};
+
+    #[derive(Clone)]
+    pub struct Silo {      
+      almacenes: Vec<Almacen>      
     }
 
     impl Silo {
-      pub fn new(capital: Capital) {
-        almacenes = Vec::new();  
+      pub fn new(posicion: Punto) -> Silo {
+        let mut almacenes = Vec::new();  
         //tipo_recurso: Recurso, posicion: Punto
         let PIEDRA: Recurso = Recurso::new(1, String::from("PIEDRA"), TipoRecurso::NATURAL); //Esto va como objeto constante en rescurso.rs            
-        almacen_piedra: Almacen = new Almacen(PIEDRA, capital.get_posicion()); 
+        let almacen_piedra: Almacen = Almacen::new(PIEDRA, posicion); 
         almacenes.push(almacen_piedra);
 
-        Capital {
-          capital: capital,
-          almacenes: almacenes
+        Silo {          
+          almacenes: almacenes          
         }
       }
 
       pub fn addAlmacen(&mut self, almacen: Almacen) {
           self.almacenes.push(almacen);
+      }
+
+      pub fn get_almacen_de_piedra(&self) -> Almacen {
+        self.almacenes[0].clone()
       }
     }
 }

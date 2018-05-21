@@ -2,12 +2,13 @@
 pub mod edificio {
     pub use juego::punto::punto::Punto;
 
-    #[derive(Clone, Debug)]
+    #[derive(Clone)]
     pub enum TipoEdificio { 
         PALACIO, SILOS, CUARTEL, MERCADO, EMBAJADA, TABERNA, CENTRO_DE_INVESTIGACION,
         GRANJA, MINA_DE_ORO, SERRERIA, MINA_DE_HIERRO, CANTERA_DE_PIEDRA,EJERCITO 
     }
 
+    #[derive(Clone)]
     pub struct Edificio {
         id:i32,
         nombre: String,

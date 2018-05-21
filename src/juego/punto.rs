@@ -2,10 +2,10 @@
 pub mod punto {
     pub use juego::edificio::edificio::{Edificio, TipoEdificio};
     
-    #[derive(Clone, Debug)]
+    #[derive(Clone)]
     pub enum TipoTerreno { SinDefinir, Prado, Bosque, Mar, AguaPocoProfunda }
 
-    #[derive(Clone, Debug)]
+    #[derive(Clone)]
     pub struct Punto {
         x: i32,
         y: i32,

@@ -1,18 +1,24 @@
 pub mod capital {
+    pub use juego::punto::punto::Punto;
+    pub use juego::edificios::silo::silo::Silo;
+
+    #[derive(Clone)]
     pub struct Capital {
-      posicion: Punto
+      posicion: Punto,
       silo: Silo
     }
 
     impl Capital {
-      pub fn new(pos: Punto, silo: Silo) {
+      pub fn new(pos: Punto, silo: Silo) -> Capital {
         Capital {
           posicion: pos,
           silo: silo
         }
       }
 
-      pub fn get_posicion() -> Punto { self.posicion }
+      pub fn get_posicion(&self) -> Punto { self.posicion.clone() }
+
+      pub fn get_silo(&self) -> Silo { self.silo.clone() }
     }
 }
 

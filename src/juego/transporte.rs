@@ -1,56 +1,64 @@
 pub mod transporte {
+    pub use juego::punto::punto::Punto;
+    pub use juego::almacen::almacen::Almacen;
+    pub use juego::recurso::recurso::Recurso;
+    pub use juego::edificio::edificio::Edificio;
+    pub use juego::tomtom::tomtom::TomTom;
+
+    use std::thread;
+    use std::time::Duration;
+    
     pub struct Transporte {
-        tiempo_recalculo: i32, //Parametros.Transporte_Tiempo_Recalculo_Ruta;
-        velocidad: i32,        //Parametros.Transporte_Velocidad;
-
+        tiempo_recalculo: i32,
+        velocidad: i32,
         posicion_actual: Punto,
-        posicion_final: Punto
-        ruta: &[Punto],
-
-        almacen_origen: Almacen;
-        almacen_destino: Almacen;
-        recurso: Recurso;
-        cantidad: i32;
-        origen: Edificio;
+        posicion_final: Punto,        
+        almacen_de_origen: Almacen,
+        almacen_de_destino: Almacen,
+        recurso: Recurso,
+        cantidad: i32,
+        origen: Edificio,
+        ruta: Vec<Punto>,
     }
 
     impl Transporte {
-        pub fn new(almacen_origen: Almacen, almacen_destino: Almacen, recurso: Recurso, cantidad: i32, origen: Edificio ) -> Transporte {
+        pub fn new(almacen_origen: Almacen, almacen_destino: Almacen, recurso: Recurso, cantidad: i32, origen: Edificio) -> Transporte {
+            let ruta = Vec::new(); 
+            let pos_actual = almacen_origen.get_posicion();
+            let pos_final = almacen_destino.get_posicion();
             Transporte {
                 tiempo_recalculo: 3,
                 velocidad: 1,
-                posicion_actual: almacen_origen.get_posicion(),
-                posicion_final: almacen_destino.get_posicion(),
-                ruta: &[],
-                almacen_origen = almacen_origen,
-                almacen_destino = almacen_destino,
+                posicion_actual: pos_actual,
+                posicion_final: pos_final,                
+                almacen_de_origen: almacen_origen,
+                almacen_de_destino: almacen_destino,                
                 recurso: recurso,
                 cantidad: cantidad,
-                origen: origen
+                origen: origen,
+                ruta: ruta
             }
         }
 
         fn calcula_viaje(&mut self) {
-            self.ruta = TomTom::calculaViaje (self.posicion_actual, self.posicion_final );
+            self.ruta = TomTom::calcula_viaje (self.posicion_actual.clone(), self.posicion_final.clone() );
         }
 
-        pub fn envia() {
+        pub fn envia(&mut self) {
+            //let tiempo:u64 = self.tiempo_recalculo;
+            let tiempo:u64 = 1; //PENDIENTE
+
             self.calcula_viaje();
-            let child = thread::spawn(|| {
-                for n in ruta {
-                    self.posicion_actual = n;
-                    thread::sleep(Duration::from_secs(self.tiempo_recalculo / self.velocidad);); //Modificar para valores reales (no enteros)
-                }
-                if ( Punto::sonIguales(self.posicion_actual, self.posicion_final) ) {
-                    //descarga mercancia                    
-                    self.almacen_destino.add_cantidad(self.cantidad);
-                    self.origen.setStatus(String::from("Envio finalizado"));
-                    this.origen.set_envio_en_marcha(false);
-                    en_ruta = false;
-                }
-            });
-            
-            let _ = child.join();
+            for n in self.ruta.clone() {
+                self.posicion_actual = n;
+                thread::sleep(Duration::from_secs(tiempo)); //Modificar para valores reales (no enteros)
+            }
+            if Punto::son_iguales(self.posicion_actual.clone(), self.posicion_final.clone()) {
+                //descarga mercancia                    
+                self.almacen_de_destino.add_cantidad(self.cantidad);
+                self.origen.setStatus(String::from("Envio finalizado"));
+                self.origen.set_envio_en_marcha(false);                    
+            }            
         }
     }
 }

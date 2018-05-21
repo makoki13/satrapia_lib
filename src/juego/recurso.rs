@@ -1,9 +1,9 @@
 /** PENDIENTE */
 pub mod recurso {
-    #[derive(Clone, Debug)]
+    #[derive(Clone)]
     pub enum TipoRecurso { NATURAL, FABRICADO, MILITAR }
 
-    #[derive(Clone, Debug)]        
+    #[derive(Clone)]        
     pub struct Recurso {
         id: i32,
         nombre: String,        

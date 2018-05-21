@@ -3,6 +3,7 @@ pub mod extractor {
     pub use juego::almacen::almacen::Almacen;
     pub use juego::productor::productor::Productor;
 
+    #[derive(Clone)]
     pub struct Extractor {
         productor: Productor,
         almacen: Almacen,
@@ -18,8 +19,8 @@ pub mod extractor {
             }
         }
 
-        pub fn get_cantidad (&mut self) {            
-            self.productor.extrae(self.cantidad);
+        pub fn get_cantidad (&mut self) -> i32 {            
+            self.productor.extrae(self.cantidad)
         }
     }
 }

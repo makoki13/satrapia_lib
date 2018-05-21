@@ -3,7 +3,7 @@ pub mod almacen {
     pub use juego::punto::punto::Punto;
     pub use juego::recurso::recurso::Recurso;
 
-    #[derive(Clone, Debug)]
+    #[derive(Clone)]
     
     pub struct Almacen {
         cantidad:i32,
