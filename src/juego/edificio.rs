@@ -16,7 +16,7 @@ pub mod edificio {
         coste_construccion:i32,
         tiempo_construccion:i32,
         status:String,
-        hayEnvioEnMarcha:bool
+        hay_envio_en_marcha:bool
     }
 
     impl Edificio {
@@ -30,7 +30,7 @@ pub mod edificio {
                 coste_construccion: coste_construccion,
                 tiempo_construccion: tiempo_construccion,
                 status: mensaje,
-                hayEnvioEnMarcha: false
+                hay_envio_en_marcha: false
             }
         }
     
@@ -45,5 +45,8 @@ pub mod edificio {
         pub fn setStatus(&mut self, mensaje:String ) { self.status = mensaje; }
         pub fn getNombre(&self) -> String { self.nombre.clone() }
         pub fn getStatus(&self) -> String { self.status.clone() }
+
+        pub fn hay_envio_en_marcha(&self) -> bool { self.hay_envio_en_marcha }
+        pub fn set_envio_en_marcha(&mut self, estado: bool) { self.hay_envio_en_marcha = estado;}
     }
 }

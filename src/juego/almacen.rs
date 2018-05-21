@@ -64,5 +64,9 @@ pub mod almacen {
         pub fn get_nombre(&self) -> String {
             self.nombre.clone()
         }
+
+        pub fn get_recurso(&self) -> Recurso {
+            self.get_tipo_recurso()
+        }
     }
 }

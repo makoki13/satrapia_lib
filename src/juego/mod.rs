@@ -6,14 +6,14 @@ pub mod extractor;
 pub mod productor;
 pub mod dispatcher;
 pub mod capital; //PENDIENTE
+pub mod transporte; //PENDIENTE
+pub mod tomtom; //PENDIENTE
 /*
 pub mod ejercito;
 pub mod imperio;
 pub mod jugador;
 pub mod mapa;
 pub mod parametros;
-pub mod tomtom;
-pub mod transporte;
 */
 
 pub mod militares;

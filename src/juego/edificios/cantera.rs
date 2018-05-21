@@ -23,7 +23,9 @@ pub mod cantera {
         filon: Productor,
         almacen: Almacen, 
 
-        edificio: Edificio
+        edificio: Edificio,
+
+        hay_envio_en_marcha: bool
     }
 
     impl Cantera {       
@@ -58,6 +60,9 @@ pub mod cantera {
             
             let almacen = Almacen::new(recursoAlmacen,posicionAlmacen);
 
+            //this._disp.addTareaRepetitiva(this, 'extrae', Parametros.Cantera_Cosecha_Tamanyo);
+            //this.setStatus ('Sin envios actuales');
+
             Cantera {
                 cantidad_extraccion: cantidad_extraccion,
                 cantidad_maxima: cantidad_maxima,
@@ -70,8 +75,54 @@ pub mod cantera {
                 filon: filon,
                 almacen: almacen,
 
-                edificio: edificio
+                edificio: edificio,
+
+                hay_envio_en_marcha: false
             }
+        }
+
+        pub fn inicia(&self) {
+            let child = thread::spawn(|| {
+                self.extrae();
+            });
+            let _ = child.join();
+        }   
+
+        pub fn extrae(mut& self) {
+            while self.estaActiva() { //En un futuro poner una guarda para cuando la mina se agote
+                cantidad:i23 = self.canteros.get_cantidad();
+                self.almacen.add_cantidad (cantidad);
+
+                /* Si el almacen alcanza el tope enviar un transporte de piedra a palacio */
+                if (self.almacen.get_cantidad() >= self.almacen.get_max_cantidad()) {
+                    if (self.edificio.hay_envio_en_marcha() == false) {
+                        self.edificio.set_envio_en_marcha(true);
+                        self.envia_piedra_hacia_ciudad();
+                    }
+                }
+                thread::sleep(Duration::from_secs(3)); //Parametrizar tiempo
+            }
+        }
+
+        pub fn enviaPiedraHaciaCiudad(&self) {
+            cantidad:i32 = self.almacen.resta_cantidad(self.almacen.get_cantidad());
+            
+            transporteDePiedra: Transporte = Transporte::new(self.almacen, capital.get_silo().get_almacen(), 
+                self.almacen.get_recurso(), cantidad, self.edificio);
+
+            this.edificio.setStatus ('inicio piedra...');
+            transporteDePiedra.envia();
+            this.edificio.setStatus ('Enviando piedra...');
+        }
+
+        pub fn estaActiva(&self) { this.filon.getStock() > 0 } //Parametrizar cero?
+
+        pub fn get_piedra_actual(&self) -> i32 {
+            self.almacen.get_cantidad()
+        }
+
+        pub fn get_max_almacen(&self) -> i32 {
+            self.almacen.get_max_cantidad()
         }
     }
 }
