@@ -105,17 +105,17 @@ pub mod cantera {
         }
 
         pub fn enviaPiedraHaciaCiudad(&self) {
-            cantidad:i32 = self.almacen.resta_cantidad(self.almacen.get_cantidad());
+            let cantidad:i32 = self.almacen.resta_cantidad(self.almacen.get_cantidad());
             
-            transporteDePiedra: Transporte = Transporte::new(self.almacen, capital.get_silo().get_almacen(), 
+            let transporteDePiedra: Transporte = Transporte::new(self.almacen, self.capital.get_silo().get_almacen(), 
                 self.almacen.get_recurso(), cantidad, self.edificio);
 
-            this.edificio.setStatus ('inicio piedra...');
+            self.edificio.setStatus (String::from("inicio piedra..."));
             transporteDePiedra.envia();
-            this.edificio.setStatus ('Enviando piedra...');
+            self.edificio.setStatus (String::from("Enviando piedra..."));
         }
 
-        pub fn estaActiva(&self) { this.filon.getStock() > 0 } //Parametrizar cero?
+        pub fn estaActiva(&self) { self.filon.getStock() > 0 } //Parametrizar cero?
 
         pub fn get_piedra_actual(&self) -> i32 {
             self.almacen.get_cantidad()

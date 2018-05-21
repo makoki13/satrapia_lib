@@ -41,15 +41,15 @@ pub mod transporte {
                     self.posicion_actual = n;
                     thread::sleep(Duration::from_secs(self.tiempo_recalculo / self.velocidad);); //Modificar para valores reales (no enteros)
                 }
-                if ( Punto::sonIguales(self.posicion_actual, self.posicion_final)) ) {
-                        //descarga mercancia                    
-                        self.almacen_destino.add_cantidad(self.cantidad);
-                        self.origen.setStatus(String::from("Envio finalizado"));
-                        this.origen.set_envio_en_marcha(false);
-                        en_ruta = false;
-                    }
+                if ( Punto::sonIguales(self.posicion_actual, self.posicion_final) ) {
+                    //descarga mercancia                    
+                    self.almacen_destino.add_cantidad(self.cantidad);
+                    self.origen.setStatus(String::from("Envio finalizado"));
+                    this.origen.set_envio_en_marcha(false);
+                    en_ruta = false;
                 }
             });
+            
             let _ = child.join();
         }
     }

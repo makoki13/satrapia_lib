@@ -16,18 +16,18 @@ pub mod tomtom {
             seguirCalculando:bool = true;
             while seguirCalculando == true {
                 if (x_actual > x_destino ) {
-                    x_actual--;
+                    x_actual -= 1;
                 } else {
                     if (x_actual < x_destino ) {
-                    x_actual++;
+                    x_actual += 1;
                     }
                 }
 
                 if (y_actual > y_destino ) {
-                    y_actual--;
+                    y_actual -= 1;
                 } else {
                     if (y_actual < y_destino ) {
-                    y_actual++;
+                    y_actual += 1;
                     }
                 }
 

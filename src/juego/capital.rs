@@ -1,5 +1,18 @@
 pub mod capital {
     pub struct Capital {
+      posicion: Punto
+      silo: Silo
+    }
+
+    impl Capital {
+      pub fn new(pos: Punto, silo: Silo) {
+        Capital {
+          posicion: pos,
+          silo: silo
+        }
+      }
+
+      pub fn get_posicion() -> Punto { self.posicion }
     }
 }
 
