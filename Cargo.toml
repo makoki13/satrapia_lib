@@ -1,0 +1,10 @@
+[package]
+name = "satrapia_lib"
+version = "0.1.0"
+authors = ["pablo <pablo.makoki@gmail.com>"]
+
+[lib]
+name = "satrapia"
+path = "src/lib.rs"
+
+[dependencies]
