@@ -25,9 +25,10 @@ pub mod productor {
         }
 
         pub fn extrae (&mut self, mut cantidad: i32 ) -> i32  {
-            cantidad = cantidad * self.ratio_produccion; // Para penalizaciones y bonus
-            // Los productores con cantidadMaxima = 0 son inagotables.
+            cantidad = cantidad * self.ratio_produccion; // Para penalizaciones y bonus            
+            // Los productores con cantidadMaxima = 0 son inagotables.            
             if self.cantidad_maxima == 0 { return cantidad; }
+            println!("Cantidad atock: {} {}", cantidad, self.stock);
             if cantidad > self.stock {
                 cantidad = self.stock;
                 self.stock = 0;

@@ -7,8 +7,9 @@ pub mod transporte {
 
     use std::thread;
     use std::time::Duration;
+    use std::sync::mpsc;
     
-    pub struct Transporte {
+    pub struct Transporte<'a> {
         tiempo_recalculo: i32,
         velocidad: i32,
         posicion_actual: Punto,
@@ -17,12 +18,12 @@ pub mod transporte {
         almacen_de_destino: Almacen,
         recurso: Recurso,
         cantidad: i32,
-        origen: Edificio,
+        origen: &'a mut Edificio,
         ruta: Vec<Punto>,
     }
 
-    impl Transporte {
-        pub fn new(almacen_origen: Almacen, almacen_destino: Almacen, recurso: Recurso, cantidad: i32, origen: Edificio) -> Transporte {
+    impl<'a> Transporte<'a> {
+        pub fn new(almacen_origen: Almacen, almacen_destino: Almacen, recurso: Recurso, cantidad: i32, origen: &mut Edificio) -> Transporte {
             let ruta = Vec::new(); 
             let pos_actual = almacen_origen.get_posicion();
             let pos_final = almacen_destino.get_posicion();
@@ -46,19 +47,49 @@ pub mod transporte {
 
         pub fn envia(&mut self) {
             //let tiempo:u64 = self.tiempo_recalculo;
-            let tiempo:u64 = 1; //PENDIENTE
-
             self.calcula_viaje();
-            for n in self.ruta.clone() {
-                self.posicion_actual = n;
-                thread::sleep(Duration::from_secs(tiempo)); //Modificar para valores reales (no enteros)
+            let rutaCalculada = self.ruta.clone();
+            let posicion_final = self.posicion_final.clone();
+            let mut posicion_actual = self.posicion_actual.clone();
+
+            //let (tx, rx) = mpsc::channel();
+
+            let child = thread::spawn(move || {
+                
+                let tiempo:u64 = 1; //PENDIENTE
+                                
+                //
+                //self.ruta = TomTom::calcula_viaje (self.posicion_actual.clone(), self.posicion_final.clone() );
+                                
+                for mut n in rutaCalculada {
+                    posicion_actual = n;
+                    println!("Pos {} {}", posicion_actual.get_x(), posicion_actual.get_y());
+                    //pos_act = posicion_actual;
+                    //tx.send(posicion_actual).unwrap();
+                    thread::sleep(Duration::from_secs(tiempo)); //Modificar para valores reales (no enteros)
+                }
+
+                /*            
+                if Punto::son_iguales(pos_act, posicion_final) {
+                    //descarga mercancia                    
+                    
+                    /*
+                    self.almacen_de_destino.add_cantidad(self.cantidad);                    
+                    self.origen.setStatus(String::from("Envio finalizado"));
+                    self.origen.set_envio_en_marcha(false);
+                    */
+                } 
+                */
+                
+            });
+
+            /*
+            loop {
+                let posicion = rx.recv().unwrap();
+                println!("Pos {} {}", posicion.get_x(), posicion.get_y());
             }
-            if Punto::son_iguales(self.posicion_actual.clone(), self.posicion_final.clone()) {
-                //descarga mercancia                    
-                self.almacen_de_destino.add_cantidad(self.cantidad);
-                self.origen.setStatus(String::from("Envio finalizado"));
-                self.origen.set_envio_en_marcha(false);                    
-            }            
+            */
+            //let res = child.join();
         }
     }
 }

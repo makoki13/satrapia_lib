@@ -11,7 +11,7 @@ pub mod cantera {
 
     use std::thread;
     use std::time::Duration;
-
+    
      #[derive(Clone)]
     pub struct Cantera {
         //coste_construccion: i32,  de edificio
@@ -45,7 +45,7 @@ pub mod cantera {
             let nombreEdificio: String = nombre.clone();
 
             let posicionEdificio: Punto = posicion.clone();
-            let posicionProductor: Punto = posicion.clone();
+            //let posicionProductor: Punto = posicion.clone();
             let posicionAlmacenCanteros: Punto = posicion.clone();
             let posicionAlmacen: Punto = posicion.clone();
             
@@ -56,13 +56,13 @@ pub mod cantera {
             let recursoAlmacenCanteros: Recurso = PIEDRA.clone();
             let recursoAlmacen: Recurso = PIEDRA.clone();
            
-            let productor = Productor::new(posicionProductor,PIEDRA,0,10,1);
+            //let productor = Productor::new(posicionProductor,PIEDRA,0,10,1);
             
             let almacenCanteros = Almacen::new(recursoAlmacenCanteros,posicionAlmacenCanteros);
-            let canteros = Extractor::new(productor,almacenCanteros,cantidad_extraccion);
-
-            let filon = Productor::new(posicion,recursoFilon,999999,999999,1);
             
+            let filon = Productor::new(posicion,recursoFilon,999999,999999,1);
+            let canteros = Extractor::new(filon.clone(),almacenCanteros,cantidad_extraccion);
+                        
             let almacen = Almacen::new(recursoAlmacen,posicionAlmacen);
 
             //this._disp.addTareaRepetitiva(this, 'extrae', Parametros.Cantera_Cosecha_Tamanyo);
@@ -91,34 +91,43 @@ pub mod cantera {
         }   
 
         pub fn extrae(&mut self) {
-            while self.estaActiva() { //En un futuro poner una guarda para cuando la mina se agote
+            while self.esta_activa() {
                 let cantidad:i32 = self.canteros.get_cantidad();
+                println!("Cantidad extraida: {}", cantidad);
                 self.almacen.add_cantidad (cantidad);
+
+                println!("Cantidad: {}", self.almacen.get_cantidad());
 
                 /* Si el almacen alcanza el tope enviar un transporte de piedra a palacio */
                 if self.almacen.get_cantidad() >= self.almacen.get_max_cantidad() {
+                    println!("{}",self.edificio.hay_envio_en_marcha());
                     if self.edificio.hay_envio_en_marcha() == false {
-                        self.edificio.set_envio_en_marcha(true);
-                        self.envia_piedra_hacia_ciudad();
+                        println!("Enviando...");
+                        self.edificio.set_envio_en_marcha(true);       
+                        println!("{}",self.edificio.hay_envio_en_marcha());                 
+                        self.envia_piedra_hacia_ciudad(); //Debe de ser un thread...                        
                     }
-                }
+                    else {
+                        println!("Esperando final de envio");
+                    }                    
+                }                                
                 thread::sleep(Duration::from_secs(3)); //Parametrizar tiempo
-            }
+            }            
         }
 
         pub fn envia_piedra_hacia_ciudad(&mut self) {
             let cantidadAlmacen = self.almacen.get_cantidad();             
-            let mut cantidad:i32 = self.almacen.resta_cantidad(cantidadAlmacen);
-            
+            let cantidad:i32 = self.almacen.resta_cantidad(cantidadAlmacen);
+                        
             let mut transporteDePiedra: Transporte = Transporte::new(self.almacen.clone(), self.capital.get_silo().get_almacen_de_piedra(), 
-                self.almacen.get_recurso(), cantidad, self.edificio.clone());
-
-            self.edificio.setStatus (String::from("inicio piedra..."));
+                self.almacen.get_recurso(), cantidad, &mut self.edificio);
+            
+            //self.edificio.setStatus (String::from("inicio piedra..."));
             transporteDePiedra.envia();
-            self.edificio.setStatus (String::from("Enviando piedra..."));
+            //self.edificio.setStatus (String::from("Enviando piedra..."));
         }
 
-        pub fn estaActiva(&self) -> bool { self.filon.getStock() > 0 } //Parametrizar cero?
+        pub fn esta_activa(&self) -> bool { self.filon.getStock() > 0 } //Parametrizar cero?
 
         pub fn get_piedra_actual(&self) -> i32 {
             self.almacen.get_cantidad()

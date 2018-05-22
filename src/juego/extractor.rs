@@ -19,7 +19,8 @@ pub mod extractor {
             }
         }
 
-        pub fn get_cantidad (&mut self) -> i32 {            
+        pub fn get_cantidad (&mut self) -> i32 {   
+            //println!("Cantidad extractor: {}", self.cantidad);         
             self.productor.extrae(self.cantidad)
         }
     }
