@@ -4,7 +4,6 @@ pub mod recurso; //PENDIENTE
 pub mod edificio;
 pub mod extractor;
 pub mod productor;
-pub mod dispatcher;
 pub mod capital; //PENDIENTE
 pub mod transporte; //PENDIENTE
 pub mod tomtom; //PENDIENTE

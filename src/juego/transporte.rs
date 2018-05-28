@@ -7,36 +7,30 @@ pub mod transporte {
 
     use std::thread;
     use std::time::Duration;
-    use std::sync::mpsc;
+    //use std::sync::mpsc;
     
-    pub struct Transporte<'a> {
+    pub struct Transporte {
         tiempo_recalculo: i32,
         velocidad: i32,
         posicion_actual: Punto,
         posicion_final: Punto,        
-        almacen_de_origen: Almacen,
-        almacen_de_destino: Almacen,
         recurso: Recurso,
-        cantidad: i32,
-        origen: &'a mut Edificio,
+        cantidad: i32,        
         ruta: Vec<Punto>,
     }
 
-    impl<'a> Transporte<'a> {
-        pub fn new(almacen_origen: Almacen, almacen_destino: Almacen, recurso: Recurso, cantidad: i32, origen: &mut Edificio) -> Transporte {
+    impl Transporte {
+        pub fn new(recurso: Recurso, cantidad: i32) -> Transporte {
             let ruta = Vec::new(); 
-            let pos_actual = almacen_origen.get_posicion();
-            let pos_final = almacen_destino.get_posicion();
+            let pos_actual = Punto::new(10,10,10);
+            let pos_final = Punto::new(0,0,0);
             Transporte {
                 tiempo_recalculo: 3,
                 velocidad: 1,
                 posicion_actual: pos_actual,
                 posicion_final: pos_final,                
-                almacen_de_origen: almacen_origen,
-                almacen_de_destino: almacen_destino,                
                 recurso: recurso,
-                cantidad: cantidad,
-                origen: origen,
+                cantidad: cantidad,                
                 ruta: ruta
             }
         }
@@ -54,7 +48,7 @@ pub mod transporte {
 
             //let (tx, rx) = mpsc::channel();
 
-            let child = thread::spawn(move || {
+            //let child = thread::spawn(move || {
                 
                 let tiempo:u64 = 1; //PENDIENTE
                                 
@@ -81,14 +75,13 @@ pub mod transporte {
                 } 
                 */
                 
-            });
+            //});
 
-            /*
-            loop {
-                let posicion = rx.recv().unwrap();
-                println!("Pos {} {}", posicion.get_x(), posicion.get_y());
-            }
-            */
+            
+            //let posicion = rx.recv().unwrap();
+            //println!("Pos {} {}", posicion.get_x(), posicion.get_y());
+            
+            
             //let res = child.join();
         }
     }

@@ -8,7 +8,6 @@ pub use satrapia::juego::militares::unidad_militar::unidad_militar::civil_con_ho
 
 pub use satrapia::juego::edificios::cantera::cantera::Cantera;
 pub use satrapia::juego::capital::capital::Capital;
-pub use satrapia::juego::dispatcher::dispatcher::Dispatcher;
 pub use satrapia::juego::edificios::silo::silo::Silo;
 
 fn main() {
@@ -25,11 +24,9 @@ fn main() {
 
     let silo = Silo::new(posicion_capital.clone());    
     let mut capital = Capital::new(posicion_capital, silo);
-
-    let dispatcher = Dispatcher::new();
-
+    
     let posicion:Punto = Punto::new(10,10,10);
-    let mut cantera = Cantera::new(1, String::from("Canterilla"), posicion, capital, dispatcher);
+    let mut cantera = Cantera::new(1, String::from("Canterilla"), posicion, &mut capital);
 
     cantera.extrae();
 
